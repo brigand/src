@@ -13,15 +13,6 @@ def get_sources():
     with open(SOURCE_FILE) as fin:
         return fin.read().splitlines()
 
-# Attempt to read the sources; but otherwise download them
-try:
-    sources = get_sources()
-except IOError:
-    print "Can't find cdnjs.list.  Now updating from repo..."
-    build_index(SOURCE_FILE)
-    sources = get_sources()
-
-
 def get_url(search, all_containing=False):
     """
     Takes a search string and attempts to find a matching library
@@ -64,6 +55,13 @@ def build_index(into):
             fout.write(url + "\n")
 
 
+# Attempt to read the sources; but otherwise download them
+try:
+    sources = get_sources()
+except IOError:
+    print "Can't find cdnjs.list.  Now updating from repo..."
+    build_index(SOURCE_FILE)
+    sources = get_sources()
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="web development asset url and download tool")
